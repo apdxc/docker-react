@@ -8,3 +8,15 @@ before_install:
 
 script:
   - docker run -e CI=true apetcu/docker-react npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-west-2"
+  app: "docker-react" #the name of the app in AWS Beanstalk
+  env: "Docker-env" #the name of the env in AWS Beanstalk
+  bucket_name: "elasticbeanstalk-us-west2-28hdhdh635" #in AWS search for S3, something with elasticbeanstalk<name of the region>
+  bucket-path: "docker-react" #the app name <-> folder in AWS bucket
+  on:
+    branch: master #deploy is done only on master branch code pushes
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: "$AWS_SECRET_KEY" # the keys are generated through AWS IAM and set with travis env variables
